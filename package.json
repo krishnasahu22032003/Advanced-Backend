@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "@google/genai": "^2.10.0",
+    "@langchain/core": "^1.2.1",
+    "@langchain/google-genai": "^2.2.0",
     "@types/express": "^5.0.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1"
