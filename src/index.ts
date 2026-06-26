@@ -2,7 +2,7 @@ import express, { application, type Request, type Response } from "express";
 import { GoogleGenAI } from "@google/genai";
 import "dotenv/config";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai"
-import { Annotation, MessagesAnnotation, StateGraph } from "@langchain/langgraph";
+import { Annotation, MemorySaver, MessagesAnnotation, StateGraph } from "@langchain/langgraph";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { TavilySearch } from "@langchain/tavily";
 
@@ -60,7 +60,9 @@ const tool = new TavilySearch({
   topic: "general",
 });
 
-//To save 
+//To save data in the memory
+
+const memory = new MemorySaver();
 
 //Creating tool node for the conditional other service search 
 
@@ -107,7 +109,7 @@ const graph = new StateGraph(MessagesAnnotation)
     .addEdge("tool", "agent")
     .addConditionalEdges("agent", shouldContinue)
     .addEdge("tool", "agent")
-    .compile()
+    .compile({checkpointer:memory})
 
 
 
@@ -120,7 +122,9 @@ app.post("/generate", async (req: Request, res: Response) => {
             role: "user",
             content: input
         }]
-    });
+    },
+{configurable:{thread_id:"user_123"}}
+);
 
     console.log(response);
 
