@@ -204,8 +204,6 @@ const PORT = 3000
 
 // async function rag() {
 
-
-
 //     const pdfPath = "./dummy.pdf";
 //     const buffer = fs.readFileSync(pdfPath);
 //     const result = new PDFParse({ data: buffer });
